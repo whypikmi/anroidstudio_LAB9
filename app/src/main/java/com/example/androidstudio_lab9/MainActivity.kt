@@ -55,6 +55,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SerialCard(
     serial: Serial,
+    onNextClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier) {
@@ -81,6 +83,20 @@ fun SerialCard(
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 1.dp)
                 )
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Button(
+                        onClick = onBackClick,
+                        modifier = Modifier.weight(0.8f).padding(end = 8.dp)
+                    ) {
+                        Text(stringResource(R.string.button_back))
+                    }
+                    Button(
+                        onClick = onNextClick,
+                        modifier = Modifier.weight(0.8f)
+                    ) {
+                        Text(stringResource(R.string.button_next))
+                    }
+                }
             }
         }
     }
@@ -95,6 +111,12 @@ fun SerialNavigator(serialList: List<Serial>, modifier: Modifier = Modifier) {
     ) {
         SerialCard(
             serial = currentserial,
+            onNextClick = {
+                currentIndex = if (currentIndex < serialList.size - 1) currentIndex + 1 else 0
+            },
+            onBackClick = {
+                currentIndex = if (currentIndex > 0) currentIndex - 1 else serialList.size - 1
+            },
             modifier = Modifier.padding(26.dp)
         )
     }
@@ -114,7 +136,9 @@ private fun SerialCardPreiew() {
                 R.string.item1,
                 R.string.item1_description,
                 R.drawable.item1
-            )
+            ),
+            onNextClick = {},
+            onBackClick = {}
         )
     }
 }
